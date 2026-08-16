@@ -52,6 +52,8 @@ form.addEventListener("submit", (e) => {
   const name = document.getElementById("name").value.trim();
   const phone = document.getElementById("phone").value.trim();
   const appliance = document.getElementById("appliance").value;
+  const brand = document.getElementById("brand").value;
+  const address = document.getElementById("address").value.trim();
   const problem = document.getElementById("problem").value.trim();
 
   if (!/^[6-9]\d{9}$/.test(phone)) {
@@ -59,7 +61,6 @@ form.addEventListener("submit", (e) => {
     return;
   }
 
-  // Replace this number with the business's real WhatsApp number.
   const businessWhatsApp = "917021852689";
 
   const message =
@@ -68,6 +69,8 @@ form.addEventListener("submit", (e) => {
     `Name: ${encodeURIComponent(name)}%0A` +
     `Phone: ${encodeURIComponent(phone)}%0A` +
     `Appliance: ${encodeURIComponent(appliance)}%0A` +
+    `Brand: ${encodeURIComponent(brand || "Not specified")}%0A` +
+    `Address: ${encodeURIComponent(address || "Not specified")}%0A` +
     `Problem: ${encodeURIComponent(problem || "Not specified")}`;
 
   window.open(`https://wa.me/${businessWhatsApp}?text=${message}`, "_blank");

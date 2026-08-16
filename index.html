@@ -147,14 +147,14 @@
             <div class="service-icon">❄️</div>
             <h3>Refrigerator Repair</h3>
             <p>Cooling problems, gas leakage, compressor, thermostat, water leakage and unusual noise.</p>
-            <a href="#contact">Book Refrigerator Service →</a>
+            <a href="#" onclick="openServiceModal('fridge');return false;">Book Refrigerator Service →</a>
           </article>
 
           <article class="service-card reveal" style="transition-delay:.2s">
             <div class="service-icon">🫧</div>
             <h3>Washing Machine</h3>
             <p>Top load, front load and semi-automatic washing machine repair and maintenance.</p>
-            <a href="#contact">Book Washing Machine Service →</a>
+            <a href="#" onclick="openServiceModal('washer');return false;">Book Washing Machine Service →</a>
           </article>
 
           <article class="service-card reveal" style="transition-delay:.3s">
@@ -344,12 +344,28 @@
           <label>Appliance
             <select id="appliance" required>
               <option value="">Select appliance</option>
-              <option>Refrigerator</option>
+              <option>Refrigerator - Double Door</option>
+              <option>Refrigerator - Single Door</option>
+              <option>Refrigerator - Side By Side</option>
               <option>Washing Machine - Top Load</option>
               <option>Washing Machine - Front Load</option>
               <option>Washing Machine - Semi Automatic</option>
             </select>
           </label>
+          <label>Brand
+            <select id="brand" required>
+              <option value="">Select brand</option>
+              <option>LG</option>
+              <option>Samsung</option>
+              <option>Whirlpool</option>
+              <option>Godrej</option>
+              <option>Haier</option>
+              <option>VS</option>
+              <option>Corma</option>
+              <option>Other</option>
+            </select>
+          </label>
+          <label>Address<textarea id="address" rows="2" placeholder="Your full address for doorstep service"></textarea></label>
           <label>Problem<textarea id="problem" rows="3" placeholder="Briefly describe the problem"></textarea></label>
           <button class="btn btn-primary full" type="submit">Send Service Request</button>
           <p class="form-note">This demo opens WhatsApp with your service request.</p>
@@ -357,6 +373,14 @@
       </div>
     </section>
   </main>
+
+  <!-- Service Options Modal -->
+  <div class="svc-modal-overlay" id="svcModal">
+    <div class="svc-modal">
+      <button class="svc-modal-close" onclick="closeSvcModal()">✕</button>
+      <div id="svcModalContent"></div>
+    </div>
+  </div>
 
   <div class="sticky-bar">
     <a href="tel:+917021852689" class="sticky-call">📞 Call Now</a>
@@ -414,5 +438,57 @@
   </footer>
 
   <script src="script.js"></script>
+  <script>
+    const svcData = {
+      fridge: {
+        title: 'Refrigerator Service',
+        icon: '❄️',
+        options: [
+          { label: 'Double Door Fridge', value: 'Refrigerator - Double Door' },
+          { label: 'Single Door Fridge', value: 'Refrigerator - Single Door' },
+          { label: 'Side By Side Door', value: 'Refrigerator - Side By Side' }
+        ]
+      },
+      washer: {
+        title: 'Washing Machine Service',
+        icon: '🫧',
+        options: [
+          { label: 'Fully Automatic (Top Load)', value: 'Washing Machine - Top Load' },
+          { label: 'Fully Automatic (Front Load)', value: 'Washing Machine - Front Load' },
+          { label: 'Semi Automatic', value: 'Washing Machine - Semi Automatic' }
+        ]
+      }
+    };
+
+    function openServiceModal(type) {
+      const d = svcData[type];
+      document.getElementById('svcModalContent').innerHTML =
+        '<h3>' + d.icon + ' ' + d.title + '</h3>' +
+        '<p class="svc-modal-sub">Select your appliance type to continue</p>' +
+        d.options.map(o =>
+          '<button class="svc-option-btn" onclick="selectService(\'' + o.value + '\')">' + o.label + '<span>→</span></button>'
+        ).join('');
+      document.getElementById('svcModal').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeSvcModal() {
+      document.getElementById('svcModal').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    function selectService(val) {
+      closeSvcModal();
+      const sel = document.getElementById('appliance');
+      if (sel) {
+        for (let o of sel.options) { if (o.value === val || o.text === val) { sel.value = o.value; break; } }
+      }
+      document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    document.getElementById('svcModal').addEventListener('click', function(e) {
+      if (e.target === this) closeSvcModal();
+    });
+  </script>
 </body>
 </html>
